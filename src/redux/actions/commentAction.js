@@ -3,7 +3,7 @@ import axios from 'axios';
 import { returnErrors } from "./errorsAction";
 
 export const getAllComments = (id) => async dispatch => {
-    await axios.get(`/posts/${id}/comments`).then(res=> dispatch({
+    await axios.get(`${url}/posts/${id}/comments`).then(res=> dispatch({
         type: GET_COMMENTS,
         payload: res.data
     })).catch(err=>{
@@ -18,7 +18,7 @@ export const createPost = (id,content) => async dispatch => {
           'Content-Type': 'application/json'
         }
     };
-    await axios.post(`/posts/${id}/comments`,JSON.stringify(content),config).then(res=> dispatch({
+    await axios.post(`${url}/posts/${id}/comments`,JSON.stringify(content),config).then(res=> dispatch({
         type: CREATE_COMMENT,
         payload: res.data
     })).catch(err=>{
@@ -28,7 +28,7 @@ export const createPost = (id,content) => async dispatch => {
 };
 
 export const deleteComment = (postId, commentId) => async dispatch => {
-    await axios.delete(`/posts/${postId}/comments/${commentId}`).then(res=> dispatch({
+    await axios.delete(`${url}/posts/${postId}/comments/${commentId}`).then(res=> dispatch({
         type: DELETE_COMMENT,
         payload: res.data
     })).catch(err=>{

@@ -2,10 +2,10 @@ import { IS_LOADED, USER_LOADED, LOGIN_SUCCESS, LOGIN_FAIL, AUTH_ERROR, LOGOUT_S
 import axios from 'axios';
 import { returnErrors } from "./errorsAction";
 
-
+const url = 'https://nextjs-mern-blog.herokuapp.com/api'
 export const loadUser = () => async dispatch => {
     
-    await axios.get('/users/isLoggedin').then(res=> dispatch({
+    await axios.get(`${url}/users/isLoggedin`).then(res=> dispatch({
         type: USER_LOADED,
         payload: res.data
     })).catch(err=>{
@@ -24,7 +24,7 @@ export const register = ({firstName,lastName,email,password,passwordConfirm})=> 
           'Content-Type': 'application/json'
         }
     };
-    axios.post('/users/signup',data,config).then(res=> dispatch({
+    axios.post(`${url}/users/signup`,data,config).then(res=> dispatch({
         type: REGISTER_SUCCESS,
         payload: res.data
     })).catch(err => {
@@ -40,7 +40,7 @@ export const login = ({email,password}) => dispatch => {
           'Content-Type': 'application/json'
         }
     };
-    axios.post('/users/login',data,config).then(res=> 
+    axios.post(`${url}/users/login`,data,config).then(res=> 
         dispatch({
         type: LOGIN_SUCCESS,
         payload: res.data})
@@ -51,7 +51,7 @@ export const login = ({email,password}) => dispatch => {
 };
 
 export const activateAccount = (activeToken)=> dispatch=> {
-    axios.get(`/users/activateAccount/${activeToken}`).then(res=> dispatch({
+    axios.get(`${url}/users/activateAccount/${activeToken}`).then(res=> dispatch({
         type: ACTIVATE_ACCOUNT,
         payload: res.data
     })).catch(err=> {
@@ -67,7 +67,7 @@ export const addProfile = (data) => async dispatch=>{
           'Content-Type': 'application/json'
         }
     };
-    await axios.patch('/users/profile',data,config).then(res=> {
+    await axios.patch(`${url}/users/profile`,data,config).then(res=> {
         dispatch({type: ADD_PROFILE,payload: res.data});
     }
     ).catch(err=> {
@@ -81,7 +81,7 @@ export const resendEmail = (email) => async dispatch => {
           'Content-Type': 'application/json'
         }
     };
-    await axios.post('/users/resendEmailToken',JSON.stringify(email),config).then(res=> {
+    await axios.post(`${url}/users/resendEmailToken`,JSON.stringify(email),config).then(res=> {
         dispatch({type: RESEND_ACTIVATE,payload: res.data});
     }
     ).catch(err=> {
@@ -95,7 +95,7 @@ export const forgetPassword = (email) => async dispatch => {
           'Content-Type': 'application/json'
         }
     };
-    await axios.post('/users/forgetPassword',JSON.stringify(email),config).then(res=> {
+    await axios.post(`${url}/users/forgetPassword`,JSON.stringify(email),config).then(res=> {
         dispatch({type: FORGET_PASS,payload: res.data});
     }
     ).catch(err=> {
@@ -104,7 +104,7 @@ export const forgetPassword = (email) => async dispatch => {
 };
 
 export const ressetPasswordGet = (token) => async dispatch => {
-    await axios.get(`/users/ressetPassword/${token}`).then(res=> {
+    await axios.get(`${url}/users/ressetPassword/${token}`).then(res=> {
         dispatch({type: RESET_PASSGET,payload: res.data});
     }
     ).catch(err=> {
@@ -118,7 +118,7 @@ export const ressetPassword = (token,{password, passwordConfirm}) => async dispa
           'Content-Type': 'application/json'
         }
     };
-    await axios.patch(`/users/ressetPassword/${token}`,JSON.stringify({password, passwordConfirm}),config).then(res=> {
+    await axios.patch(`${url}/users/ressetPassword/${token}`,JSON.stringify({password, passwordConfirm}),config).then(res=> {
         dispatch({type: RESET_PASS,payload: res.data});
     }
     ).catch(err=> {
@@ -132,7 +132,7 @@ export const updatePassword = ({currentPass, password, passwordConfirm}) => asyn
           'Content-Type': 'application/json'
         }
     };
-    await axios.patch('/users/updatePassword',JSON.stringify({currentPass, password, passwordConfirm}),config).then(res=> {
+    await axios.patch(`${url}/users/updatePassword`,JSON.stringify({currentPass, password, passwordConfirm}),config).then(res=> {
         dispatch({type: UPDATE_PASS,payload: res.data});
     }
     ).catch(err=> {
@@ -146,7 +146,7 @@ export const updateEmail = ({newEmail, password}) => async dispatch => {
           'Content-Type': 'application/json'
         }
     };
-    await axios.patch('/users/updateEmail',JSON.stringify({newEmail, password}),config).then(res=> {
+    await axios.patch(`${url}/users/updateEmail`,JSON.stringify({newEmail, password}),config).then(res=> {
         dispatch({type: UPDATE_EMAIL,payload: res.data});
     }
     ).catch(err=> {
@@ -160,7 +160,7 @@ export const updateMe = ({firstName, lastName}) => async dispatch => {
           'Content-Type': 'application/json'
         }
     };
-    await axios.patch('/users/updateMe',JSON.stringify({firstName, lastName}),config).then(res=> {
+    await axios.patch(`${url}/users/updateMe`,JSON.stringify({firstName, lastName}),config).then(res=> {
         dispatch({type: UPDATE_ME,payload: res.data});
     }
     ).catch(err=> {
@@ -169,7 +169,7 @@ export const updateMe = ({firstName, lastName}) => async dispatch => {
 };
 
 export const confirmNewEmail = (token)=> dispatch=> {
-    axios.patch(`/users/confirmNewEmail/${token}`).then(res=> dispatch({
+    axios.patch(`${url}/users/confirmNewEmail/${token}`).then(res=> dispatch({
         type: CONFIRM_NEWEMAIL,
         payload: res.data
     })).catch(err=> {
@@ -178,7 +178,7 @@ export const confirmNewEmail = (token)=> dispatch=> {
 };
 
 export const logout = () => async dispatch => {
-    await axios.get('/users/logout').then(res=> dispatch({
+    await axios.get(`${url}/users/logout`).then(res=> dispatch({
         type: LOGOUT_SUCCESS
     })).catch(err=> {
         dispatch(returnErrors(err.response.data.message, err.response.data.status))

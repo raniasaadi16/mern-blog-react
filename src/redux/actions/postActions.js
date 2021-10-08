@@ -3,7 +3,7 @@ import axios from 'axios';
 import { returnErrors } from "./errorsAction";
 
 export const getAllPosts = (search) => async dispatch => {
-    await axios.get(`/posts/${search}`).then(res=> dispatch({
+    await axios.get(`${url}/posts/${search}`).then(res=> dispatch({
         type: GET_ALLPOSTS,
         payload: res.data
     })).catch(err=>{
@@ -13,7 +13,7 @@ export const getAllPosts = (search) => async dispatch => {
 };
 
 export const getSlidPosts = () => async dispatch => {
-    await axios.get('/posts/?sort=likeCount&limit=10').then(res=> dispatch({
+    await axios.get(`${url}/posts/?sort=likeCount&limit=10`).then(res=> dispatch({
         type: GET_SLIDEPOSTS,
         payload: res.data
     })).catch(err=>{
@@ -25,7 +25,7 @@ export const getSlidPosts = () => async dispatch => {
 
 export const getPost = (id) => async dispatch => {
     //dispatch({type: IS_LOADED});
-    await axios.get(`/posts/${id}`).then(res=> dispatch({
+    await axios.get(`${url}/posts/${id}`).then(res=> dispatch({
         type: GET_POST,
         payload: res.data
     })).catch(err=>{
@@ -40,7 +40,7 @@ export const createPost = (data) => async dispatch => {
           'Content-Type': 'application/json'
         }
     };
-    await axios.post('/posts',data,config).then(res=> dispatch({
+    await axios.post(`${url}/posts`,data,config).then(res=> dispatch({
         type: CREATE_POST,
         payload: res.data
     })).catch(err=>{
@@ -55,7 +55,7 @@ export const updatePost = (id, data) => async dispatch => {
           'Content-Type': 'application/json'
         }
     };
-    await axios.patch(`/posts/${id}`,data,config).then(res=> dispatch({
+    await axios.patch(`${url}/posts/${id}`,data,config).then(res=> dispatch({
         type: UPDATE_POST,
         payload: res.data
     })).catch(err=>{
@@ -65,7 +65,7 @@ export const updatePost = (id, data) => async dispatch => {
 };
 
 export const deletePost = (id) => async dispatch => {
-    await axios.delete(`/posts/${id}`).then(res=> dispatch({
+    await axios.delete(`${url}/posts/${id}`).then(res=> dispatch({
         type: DELETE_POST,
         payload: res.data
     })).catch(err=>{
@@ -79,7 +79,7 @@ export const likePost = (id) => async dispatch => {
           'Content-Type': 'application/json'
         }
     };
-    await axios.patch(`/posts/${id}/likePost`,config).then(res=> dispatch({
+    await axios.patch(`${url}/posts/${id}/likePost`,config).then(res=> dispatch({
         type: LIKE_POST,
         payload: res.data
     })).catch(err=>{
