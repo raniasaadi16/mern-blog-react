@@ -2,6 +2,7 @@ import { IS_LOADED, GET_COMMENTS, CREATE_COMMENT, UPDATE_COMMENT, DELETE_COMMENT
 import axios from 'axios';
 import { returnErrors } from "./errorsAction";
 
+const url = 'https://nextjs-mern-blog.herokuapp.com/api'
 export const getAllComments = (id) => async dispatch => {
     await axios.get(`${url}/posts/${id}/comments`).then(res=> dispatch({
         type: GET_COMMENTS,

@@ -2,6 +2,7 @@ import { IS_LOADED, GET_ALLPOSTS, GET_POST, CREATE_POST, UPDATE_POST, DELETE_POS
 import axios from 'axios';
 import { returnErrors } from "./errorsAction";
 
+const url = 'https://nextjs-mern-blog.herokuapp.com/api'
 export const getAllPosts = (search) => async dispatch => {
     await axios.get(`${url}/posts/${search}`).then(res=> dispatch({
         type: GET_ALLPOSTS,
