@@ -24,7 +24,7 @@ export const loadUser = () => async dispatch => {
     }
 }
 
-export const register = ({firstName,lastName,email,password,passwordConfirm})=> dispatch =>{
+export const register = ({firstName,lastName,email,password,passwordConfirm})=> async dispatch =>{
     try{
         const res = await fetch(`${url}/users/signup`, {
             method: 'POST',
