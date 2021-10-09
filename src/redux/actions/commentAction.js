@@ -22,8 +22,8 @@ export const createPost = (id,content) => async dispatch => {
             body: JSON.stringify(content),
             credentials:'include',
             headers: {
-                'Access-Control-Allow-Credentials': true,
-                "Access-Control-Allow-Origin": "https://mern-blog-react.vercel.app"
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Credentials': true
             }
         })
         const data = await res.json()
@@ -37,6 +37,7 @@ export const createPost = (id,content) => async dispatch => {
     }catch(err){
         dispatch(returnErrors(err.response.data.message,err.response.data.status));
     }
+  
    // dispatch({type: IS_LOADED});
 };
 
