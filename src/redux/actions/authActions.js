@@ -213,11 +213,24 @@ export const confirmNewEmail = (token)=> dispatch=> {
 };
 
 export const logout = () => async dispatch => {
-    await axios.get(`${url}/users/logout`).then(res=> dispatch({
-        type: LOGOUT_SUCCESS
-    })).catch(err=> {
+    try{
+        const res = await fetch(`${url}/users/logout`, {
+            method: 'GET',
+            credentials:'include',
+            headers: {
+                'Access-Control-Allow-Credentials': true
+            },
+        })
+        const data = await res.json()
+        if(!res.ok){
+            throw data
+        }
+        dispatch({
+            type: LOGOUT_SUCCESS
+        })
+    }catch(err){
         dispatch(returnErrors(err.response.data.message, err.response.data.status))
-    });
+    }
     dispatch({type: IS_LOADED});
 }
 
