@@ -25,7 +25,7 @@ export const loadUser = () => async dispatch => {
                 'Access-Control-Allow-Credentials': true
             },
         })
-        const data = res.json()
+        const data = await res.json()
         dispatch({
             type: USER_LOADED,
             payload: data
@@ -54,22 +54,44 @@ export const register = ({firstName,lastName,email,password,passwordConfirm})=> 
 };
 
 export const login = ({email,password}) => dispatch => {
-    const data = JSON.stringify({email,password});
-    const config = {
-        headers: {
-          'Content-Type': 'application/json'
-        }
-    };
-    axios.post(`${url}/users/login`,data,config).then(res=> 
+    try{
+        const data = JSON.stringify({email,password});
+        const res = await fetch(`${url}/users/login` ,{
+            method: 'POST',
+            body: data,
+            headers:{
+                'Content-Type': 'application/json',
+                "Access-Control-Allow-Origin": "https://mern-blog-react.vercel.app"
+            },
+            credentials: "include"
+        }) 
+        const logData = await res.json()
         dispatch({
-        type: LOGIN_SUCCESS,
-        payload: res.data})
-    ).catch(err=> {
+            type: LOGIN_SUCCESS,
+            payload: logData
+        })
+    }catch(err){
         dispatch(returnErrors(err.response.data.message, err.response.data.status));
         dispatch({type: LOGIN_FAIL})
-    })
+    }
 };
 
+// export const login = ({email,password}) => dispatch => {
+//     const data = JSON.stringify({email,password});
+//     const config = {
+//         headers: {
+//           'Content-Type': 'application/json'
+//         }
+//     };
+//     axios.post(`${url}/users/login`,data,config).then(res=> 
+//         dispatch({
+//         type: LOGIN_SUCCESS,
+//         payload: res.data})
+//     ).catch(err=> {
+//         dispatch(returnErrors(err.response.data.message, err.response.data.status));
+//         dispatch({type: LOGIN_FAIL})
+//     })
+// };
 export const activateAccount = (activeToken)=> dispatch=> {
     axios.get(`${url}/users/activateAccount/${activeToken}`).then(res=> dispatch({
         type: ACTIVATE_ACCOUNT,
