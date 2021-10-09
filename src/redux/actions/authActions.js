@@ -3,17 +3,37 @@ import axios from 'axios';
 import { returnErrors } from "./errorsAction";
 
 const url = 'https://nextjs-mern-blog.herokuapp.com/api'
-export const loadUser = () => async dispatch => {
+//const url = 'http://loaclhost:5000/api'
+
+// export const loadUser = () => async dispatch => {
     
-    await axios.get(`${url}/users/isLoggedin`).then(res=> dispatch({
-        type: USER_LOADED,
-        payload: res.data
-    })).catch(err=>{
-        //dispatch(returnErrors(err.response.data.message,err.response.data.status));
+//     await axios.get(`${url}/users/isLoggedin`).then(res=> dispatch({
+//         type: USER_LOADED,
+//         payload: res.data
+//     })).catch(err=>{
+//         //dispatch(returnErrors(err.response.data.message,err.response.data.status));
+//         dispatch({type: AUTH_ERROR})
+//     });
+//     dispatch({type: IS_LOADED});
+// };
+export const loadUser = () => async dispatch => {
+    try {
+        const res = await fetch(`${url}/users/isLoggedin`, {
+            method: 'GET',
+            credentials:'include',
+            headers: {
+                'Access-Control-Allow-Credentials': true
+            },
+        })
+        const data = res.json()
+        dispatch({
+            type: USER_LOADED,
+            payload: data
+        })
+    }catch(err){
         dispatch({type: AUTH_ERROR})
-    });
-    dispatch({type: IS_LOADED});
-};
+    }
+}
 
 export const register = ({firstName,lastName,email,password,passwordConfirm})=> dispatch=>{
     //conver javascript object to json object

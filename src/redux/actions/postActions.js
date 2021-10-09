@@ -3,6 +3,8 @@ import axios from 'axios';
 import { returnErrors } from "./errorsAction";
 
 const url = 'https://nextjs-mern-blog.herokuapp.com/api'
+//const url = 'http://loaclhost:5000/api'
+
 export const getAllPosts = (search) => async dispatch => {
     await axios.get(`${url}/posts/${search}`).then(res=> dispatch({
         type: GET_ALLPOSTS,
