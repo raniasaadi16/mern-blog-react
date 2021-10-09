@@ -53,7 +53,7 @@ export const register = ({firstName,lastName,email,password,passwordConfirm})=> 
     })
 };
 
-export const login = ({email,password}) => dispatch => {
+export const login = ({email,password}) => async dispatch => {
     try{
         const data = JSON.stringify({email,password});
         const res = await fetch(`${url}/users/login` ,{
