@@ -5,17 +5,6 @@ import { returnErrors } from "./errorsAction";
 const url = 'https://nextjs-mern-blog.herokuapp.com/api'
 //const url = 'http://loaclhost:5000/api'
 
-// export const loadUser = () => async dispatch => {
-    
-//     await axios.get(`${url}/users/isLoggedin`).then(res=> dispatch({
-//         type: USER_LOADED,
-//         payload: res.data
-//     })).catch(err=>{
-//         //dispatch(returnErrors(err.response.data.message,err.response.data.status));
-//         dispatch({type: AUTH_ERROR})
-//     });
-//     dispatch({type: IS_LOADED});
-// };
 export const loadUser = () => async dispatch => {
     try {
         const res = await fetch(`${url}/users/isLoggedin`, {
@@ -35,22 +24,26 @@ export const loadUser = () => async dispatch => {
     }
 }
 
-export const register = ({firstName,lastName,email,password,passwordConfirm})=> dispatch=>{
-    //conver javascript object to json object
-    const data = JSON.stringify({firstName,lastName,email,password,passwordConfirm});
-    //console.log(data);
-    const config = {
-        headers: {
-          'Content-Type': 'application/json'
-        }
-    };
-    axios.post(`${url}/users/signup`,data,config).then(res=> dispatch({
-        type: REGISTER_SUCCESS,
-        payload: res.data
-    })).catch(err => {
+export const register = ({firstName,lastName,email,password,passwordConfirm})=> dispatch =>{
+    try{
+        const res = await fetch(`${url}/users/signup`, {
+            method: 'POST',
+            body: JSON.stringify({firstName,lastName,email,password,passwordConfirm}),
+            credentials:'include',
+            headers: {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Credentials': true
+            }
+        })
+        const data = await res.json()
+        dispatch({
+            type: REGISTER_SUCCESS,
+            payload: data
+        })
+    }catch(err){
         dispatch(returnErrors(err.response.data.message,err.response.data.status,'REGISTER_FAIL'));
         dispatch({type: REGISTER_FAIL})
-    })
+    }
 };
 
 export const login = ({email,password}) => async dispatch => {

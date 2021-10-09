@@ -38,56 +38,95 @@ export const getPost = (id) => async dispatch => {
 };
 
 export const createPost = (data) => async dispatch => {
-    const config = {
-        headers: {
-          'Content-Type': 'application/json'
+    try{
+        const res = await fetch(`${url}/posts`,{
+            method: 'POST',
+            body: data,
+            credentials:'include',
+            headers: {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Credentials': true
+            }
+        })
+        const data = await res.json()
+        if(!res.ok){
+            throw data
         }
-    };
-    await axios.post(`${url}/posts`,data,config).then(res=> dispatch({
-        type: CREATE_POST,
-        payload: res.data
-    })).catch(err=>{
+        dispatch({
+            type: CREATE_POST,
+            payload: data
+        })
+    }catch(err){
         dispatch(returnErrors(err.response.data.message,err.response.data.status));
-    });
+    }
     dispatch({type: IS_LOADED});
 };
 
 export const updatePost = (id, data) => async dispatch => {
-    const config = {
-        headers: {
-          'Content-Type': 'application/json'
+    try{
+        const res = await fetch(`${url}/posts/${id}`,{
+            method: 'PATCH',
+            body: data,
+            credentials:'include',
+            headers: {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Credentials': true
+            }
+        })
+        const updata = await res.json()
+        if(!res.ok){
+            throw updata
         }
-    };
-    await axios.patch(`${url}/posts/${id}`,data,config).then(res=> dispatch({
-        type: UPDATE_POST,
-        payload: res.data
-    })).catch(err=>{
+        dispatch({
+            type: UPDATE_POST,
+            payload: updata
+        })
+    }catch(err){
         dispatch(returnErrors(err.response.data.message,err.response.data.status));
-    });
+    }
     dispatch({type: IS_LOADED});
 };
 
 export const deletePost = (id) => async dispatch => {
-    await axios.delete(`${url}/posts/${id}`).then(res=> dispatch({
-        type: DELETE_POST,
-        payload: res.data
-    })).catch(err=>{
+    try{
+        const res = await fetch(`${url}/posts/${id}`,{
+            method: 'DELETE',
+            credentials:'include',
+            headers: {
+                'Access-Control-Allow-Credentials': true
+            }
+        })
+        const data = await res.json()
+        dispatch({
+            type: DELETE_POST,
+            payload: data
+        })
+    }catch(err){
         dispatch(returnErrors(err.response.data.message,err.response.data.status));
-    });
+    }
 };
 
 export const likePost = (id) => async dispatch => {
-    const config = {
-        headers: {
-          'Content-Type': 'application/json'
+    try{
+        const res = await fetch(`${url}/posts/${id}/likePost`,{
+            method: 'PATCH',
+            credentials:'include',
+            headers: {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Credentials': true
+            }
+        })
+        const data = await res.json()
+        if(!res.ok){
+            throw data
         }
-    };
-    await axios.patch(`${url}/posts/${id}/likePost`,config).then(res=> dispatch({
-        type: LIKE_POST,
-        payload: res.data
-    })).catch(err=>{
+        dispatch({
+            type: LIKE_POST,
+            payload: data
+        })
+    }catch(err){
         dispatch(returnErrors(err.response.data.message,err.response.data.status));
-    });
+    }
 };
 
 export const clearMsg = () => {
