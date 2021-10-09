@@ -54,7 +54,7 @@ export const login = ({email,password}) => async dispatch => {
             body: data,
             headers:{
                 'Content-Type': 'application/json',
-                "Access-Control-Allow-Origin": "https://mern-blog-react.vercel.app"
+                "Access-Control-Allow-Origin": "https://www.raniadev-blog.tk"
             },
             credentials: "include"
         }) 
