@@ -13,7 +13,7 @@ export default function Comment({comment, postId}) {
 
     const checkUserComment = () => {
         if(user._id === comment.user._id || user.role === 'admin'){
-            return <button className="btn primary-color float-right" onClick={handleDelet}>delete<i className="bi bi-archive ml-2"></i></button>
+            return <button className="btn primary-color float-right" type='button' onClick={handleDelet}>delete<i className="bi bi-archive ml-2"></i></button>
         }
     }
     return (

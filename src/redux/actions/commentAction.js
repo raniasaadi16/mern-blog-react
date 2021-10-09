@@ -31,12 +31,23 @@ export const createPost = (id,content) => async dispatch => {
 };
 
 export const deleteComment = (postId, commentId) => async dispatch => {
-    await axios.delete(`${url}/posts/${postId}/comments/${commentId}`).then(res=> dispatch({
-        type: DELETE_COMMENT,
-        payload: res.data
-    })).catch(err=>{
+    try{
+        const res = await fetch(`${url}/posts/${postId}/comments/${commentId}`,{
+            method: 'DELETE',
+            credentials:'include',
+            headers: {
+                'Access-Control-Allow-Credentials': true
+            }
+        })
+        const data = await res.json()
+        dispatch({
+            type: DELETE_COMMENT,
+            payload: data
+        })
+    }catch(err){
         dispatch(returnErrors(err.response.data.message,err.response.data.status));
-    });
+    }
+
 };
 
 export const clearMsg = () => {
