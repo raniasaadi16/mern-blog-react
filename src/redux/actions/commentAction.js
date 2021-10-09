@@ -16,17 +16,26 @@ export const getAllComments = (id) => async dispatch => {
 };
 
 export const createPost = (id,content) => async dispatch => {
-    const config = {
-        headers: {
-          'Content-Type': 'application/json'
+    try{
+        const res = await fetch(`${url}/posts/${id}/comments`, {
+            method: 'POST',
+            body: JSON.stringify(content),
+            credentials:'include',
+            headers: {
+                'Access-Control-Allow-Credentials': true
+            }
+        })
+        const data = await res.json()
+        if(!res.ok){
+            throw data
         }
-    };
-    await axios.post(`${url}/posts/${id}/comments`,JSON.stringify(content),config).then(res=> dispatch({
-        type: CREATE_COMMENT,
-        payload: res.data
-    })).catch(err=>{
+        dispatch({
+            type: CREATE_COMMENT,
+            payload: data
+        })
+    }catch(err){
         dispatch(returnErrors(err.response.data.message,err.response.data.status));
-    });
+    }
    // dispatch({type: IS_LOADED});
 };
 
