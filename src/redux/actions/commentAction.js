@@ -22,7 +22,8 @@ export const createPost = (id,content) => async dispatch => {
             body: JSON.stringify(content),
             credentials:'include',
             headers: {
-                'Access-Control-Allow-Credentials': true
+                'Access-Control-Allow-Credentials': true,
+                "Access-Control-Allow-Origin": "https://mern-blog-react.vercel.app"
             }
         })
         const data = await res.json()
