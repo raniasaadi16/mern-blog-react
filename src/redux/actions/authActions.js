@@ -36,6 +36,10 @@ export const register = ({firstName,lastName,email,password,passwordConfirm})=> 
             }
         })
         const data = await res.json()
+        if(!res.ok){
+            console.log(data)
+            throw data
+        }
         dispatch({
             type: REGISTER_SUCCESS,
             payload: data
@@ -59,6 +63,9 @@ export const login = ({email,password}) => async dispatch => {
             credentials: "include"
         }) 
         const logData = await res.json()
+        if(!res.ok){
+            throw logData
+        }
         dispatch({
             type: LOGIN_SUCCESS,
             payload: logData
