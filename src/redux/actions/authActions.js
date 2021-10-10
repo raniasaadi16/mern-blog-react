@@ -120,6 +120,7 @@ export const addProfile = (data) => async dispatch=>{
         }
         dispatch({type: ADD_PROFILE,payload: profData});
     }catch(err){
+        console.log(err)
         dispatch(returnErrors(err.message, err.status));
     }
 };
