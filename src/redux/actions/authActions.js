@@ -104,17 +104,24 @@ export const activateAccount = (activeToken)=> dispatch=> {
 
 export const addProfile = (data) => async dispatch=>{
     //const data = { picture, about, facebook, instagram, behance};
-    const config = {
-        headers: {
-          'Content-Type': 'application/json'
+    try{
+        const res = await fetch(`${url}/users/profile`, {
+            method: 'PATCH',
+            body: data,
+            headers:{
+                'Content-Type': 'application/json',
+                "Access-Control-Allow-Origin": "https://www.raniadev-blog.tk"
+            },
+            credentials: "include"
+        })
+        const profData = await res.json()
+        if(!res.ok){
+            throw profData
         }
-    };
-    await axios.patch(`${url}/users/profile`,data,config).then(res=> {
-        dispatch({type: ADD_PROFILE,payload: res.data});
+        dispatch({type: ADD_PROFILE,payload: profData});
+    }catch(err){
+        dispatch(returnErrors(err.message, err.status));
     }
-    ).catch(err=> {
-        dispatch(returnErrors(err.response.data.message, err.response.data.status));
-    })
 };
 
 export const resendEmail = (email) => async dispatch => {
@@ -169,45 +176,66 @@ export const ressetPassword = (token,{password, passwordConfirm}) => async dispa
 };
 
 export const updatePassword = ({currentPass, password, passwordConfirm}) => async dispatch => {
-    const config = {
-        headers: {
-          'Content-Type': 'application/json'
+    try{
+        const res = await fetch(`${url}/users/updatePassword`, {
+            method: 'PATCH',
+            body: JSON.stringify({currentPass, password, passwordConfirm}),
+            headers:{
+                'Content-Type': 'application/json',
+                "Access-Control-Allow-Origin": "https://www.raniadev-blog.tk"
+            },
+            credentials: "include"
+        })
+        const data = await res.json()
+        if(!res.ok){
+            throw data
         }
-    };
-    await axios.patch(`${url}/users/updatePassword`,JSON.stringify({currentPass, password, passwordConfirm}),config).then(res=> {
-        dispatch({type: UPDATE_PASS,payload: res.data});
+        dispatch({type: UPDATE_PASS,payload: data});
+    }catch(err){
+        dispatch(returnErrors(err.message, err.status));
     }
-    ).catch(err=> {
-        dispatch(returnErrors(err.response.data.message, err.response.data.status));
-    })
 };
 
 export const updateEmail = ({newEmail, password}) => async dispatch => {
-    const config = {
-        headers: {
-          'Content-Type': 'application/json'
+    try{
+        const res = await fetch(`${url}/users/updateEmail`, {
+            method: 'PATCH',
+            body: JSON.stringify({newEmail, password}),
+            headers:{
+                'Content-Type': 'application/json',
+                "Access-Control-Allow-Origin": "https://www.raniadev-blog.tk"
+            },
+            credentials: "include"
+        })
+        const data = await res.json()
+        if(!res.ok){
+            throw data
         }
-    };
-    await axios.patch(`${url}/users/updateEmail`,JSON.stringify({newEmail, password}),config).then(res=> {
-        dispatch({type: UPDATE_EMAIL,payload: res.data});
+        dispatch({type: UPDATE_EMAIL,payload: data});
+    }catch(err){
+        dispatch(returnErrors(err.message, err.status));
     }
-    ).catch(err=> {
-        dispatch(returnErrors(err.response.data.message, err.response.data.status));
-    })
 };
 
 export const updateMe = ({firstName, lastName}) => async dispatch => {
-    const config = {
-        headers: {
-          'Content-Type': 'application/json'
+    try{
+        const res = await fetch(`${url}/users/updateMe`, {
+            method: 'PATCH',
+            body: JSON.stringify({firstName, lastName}),
+            headers:{
+                'Content-Type': 'application/json',
+                "Access-Control-Allow-Origin": "https://www.raniadev-blog.tk"
+            },
+            credentials: "include"
+        })
+        const data = await res.json()
+        if(!res.ok){
+            throw data
         }
-    };
-    await axios.patch(`${url}/users/updateMe`,JSON.stringify({firstName, lastName}),config).then(res=> {
-        dispatch({type: UPDATE_ME,payload: res.data});
+        dispatch({type: UPDATE_ME,payload: data});
+    }catch(err){
+        dispatch(returnErrors(err.message, err.status));
     }
-    ).catch(err=> {
-        dispatch(returnErrors(err.response.data.message, err.response.data.status));
-    })
 };
 
 export const confirmNewEmail = (token)=> dispatch=> {

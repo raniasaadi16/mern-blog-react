@@ -28,6 +28,7 @@ const Posts = () => {
     return (
         <div className='container mt-4'>
             {!isLoaded ? <PostLoading/> : <Filter searchQuery={searchQuery} setsearchQuey={setsearchQuery} category={category} />}
+            {!(posts.length > 0) && <PostLoading/>}
             <div className="posts mt-5">
                 {!isLoaded ? <PostLoading/> : (
                     <div className="row">
