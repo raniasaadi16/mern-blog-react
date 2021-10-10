@@ -35,7 +35,7 @@ export const createPost = (id,content) => async dispatch => {
             payload: data
         })
     }catch(err){
-        dispatch(returnErrors(err.response.data.message,err.response.data.status));
+        dispatch(returnErrors(err.message,err.status));
     }
   
    // dispatch({type: IS_LOADED});

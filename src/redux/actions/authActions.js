@@ -45,7 +45,7 @@ export const register = ({firstName,lastName,email,password,passwordConfirm})=> 
             payload: data
         })
     }catch(err){
-        dispatch(returnErrors(err.response.data.message,err.response.data.status,'REGISTER_FAIL'));
+        dispatch(returnErrors(err.message,err.status,'REGISTER_FAIL'));
         dispatch({type: REGISTER_FAIL})
     }
 };
@@ -71,7 +71,7 @@ export const login = ({email,password}) => async dispatch => {
             payload: logData
         })
     }catch(err){
-        dispatch(returnErrors(err.response.data.message, err.response.data.status));
+        dispatch(returnErrors(err.message, err.status));
         dispatch({type: LOGIN_FAIL})
     }
 };
