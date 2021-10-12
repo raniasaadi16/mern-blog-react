@@ -177,6 +177,9 @@ export const ressetPasswordGet = (token) => async dispatch => {
             method: 'GET'
         })
         const data = await res.json()
+        if(!res.ok){
+            throw data
+        }
         dispatch({type: RESET_PASSGET,payload: data});
     }catch(err){
         dispatch(returnErrors(err.message, err.status, 'GET_RESSET'));
