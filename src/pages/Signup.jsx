@@ -63,7 +63,7 @@ export default function Signup() {
                         <div className="popup position-fixed w-100 h-100" style={{display: popup ? 'block' : 'none'}}>
                             <div className="px-3 py-2 mx-auto w-25 position-relative rounded content">
                                 <button className='btn ml-auto' onClick={()=> {setpopup(false); setloading(false)}}>x</button>
-                                <h3 className='text-center'>{msg} to this email : {user.email}</h3>
+                                <h3 className='text-center'>{msg}</h3>
                                 <button className='btn bg-pink mx-auto d-block px-4 py-1' onClick={resendToken}>Resend email</button>
                             </div>
                         </div>
