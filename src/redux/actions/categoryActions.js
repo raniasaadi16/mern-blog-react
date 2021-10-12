@@ -1,38 +1,67 @@
 import { GET_CATEGORIES, UPDATE_CATEGORY, ADD_CATEGORY, DELETE_CATEGORY } from "../actions/types";
-import axios from 'axios';
 import { returnErrors } from "./errorsAction";
 
 const url = 'https://nextjs-mern-blog.herokuapp.com/api'
 //const url = 'http://loaclhost:5000/api'
 
 export const getCategories = () => async dispatch => {
-    await axios.get(`${url}/categories`).then(res=> dispatch({
-        type: GET_CATEGORIES,
-        payload: res.data
-    })).catch(err=>{
-        dispatch(returnErrors(err.response.data.message,err.response.data.status));
-    });
+    try{
+        const res = await fetch(`${url}/categories`,{
+            method: 'GET'
+        })
+        const data = await res.json()
+        dispatch({
+            type: GET_CATEGORIES,
+            payload: data
+        })
+    }catch(err){
+        dispatch(returnErrors(err.message,err.status));
+    }
+
 };
 
 export const addCategory = (data) => async dispatch => {
-    const config = {
-        headers: {
-          'Content-Type': 'application/json'
+    try{
+        const res = await fetch(`${url}/categories` ,{
+            method: 'POST',
+            body: JSON.stringify(data),
+            headers:{
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Credentials': true
+            },
+            credentials: "include"
+        }) 
+        const catData = await res.json()
+        if(!res.ok){
+            throw catData
         }
-    };
-    await axios.post(`${url}/categories`,JSON.stringify(data),config).then(res=> dispatch({
-        type: ADD_CATEGORY,
-        payload: res.data
-    })).catch(err=>{
-        dispatch(returnErrors(err.response.data.message,err.response.data.status));
-    });
+        dispatch({
+            type: ADD_CATEGORY,
+            payload: catData
+        })
+    }catch(err){
+        dispatch(returnErrors(err.message, err.status));
+    }
 };
 
 export const deleteCategory = (id) => async dispatch => {
-    await axios.delete(`${url}/categories/${id}`).then(res=> dispatch({
-        type: DELETE_CATEGORY,
-        payload: res.data
-    })).catch(err=>{
-        dispatch(returnErrors(err.response.data.message,err.response.data.status));
-    });
+    try{
+        const res = await fetch(`${url}/categories/${id}` ,{
+            method: 'DELETE',
+            headers:{
+                'Access-Control-Allow-Credentials': true
+            },
+            credentials: "include"
+        }) 
+        const data = await res.json()
+        if(!res.ok){
+            throw data
+        }
+        dispatch({
+            type: DELETE_CATEGORY,
+            payload: data
+        })
+    }catch(err){
+        dispatch(returnErrors(err.message, err.status));
+    }
 };

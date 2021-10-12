@@ -37,7 +37,7 @@ export default function AddProfileCom({title, skip, p}) {
         setloading(true);
 
         const profile = new FormData();
-        profile.append('about',data.about);
+         profile.append('about',data.about);
         profile.append('facebook',data.facebook);
         profile.append('instagram',data.instagram);
         profile.append('behance',data.behance);

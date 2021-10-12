@@ -1,5 +1,4 @@
 import { IS_LOADED, USER_LOADED, LOGIN_SUCCESS, LOGIN_FAIL, AUTH_ERROR, LOGOUT_SUCCESS, REGISTER_SUCCESS, REGISTER_FAIL, ACTIVATE_ACCOUNT, ACTIVATE_FAIL, RESEND_ACTIVATE, CLEAR_MSG, ADD_PROFILE, FORGET_PASS, RESET_PASS, RESET_PASSGET, UPDATE_PASS, UPDATE_EMAIL, UPDATE_ME, CONFIRM_NEWEMAIL, DELETE_ME } from "./types";
-import axios from 'axios';
 import { returnErrors } from "./errorsAction";
 
 const url = 'https://nextjs-mern-blog.herokuapp.com/api'
@@ -22,6 +21,7 @@ export const loadUser = () => async dispatch => {
     }catch(err){
         dispatch({type: AUTH_ERROR})
     }
+    dispatch({type: IS_LOADED});
 }
 
 export const register = ({firstName,lastName,email,password,passwordConfirm})=> async dispatch =>{
@@ -58,7 +58,8 @@ export const login = ({email,password}) => async dispatch => {
             body: data,
             headers:{
                 'Content-Type': 'application/json',
-                "Access-Control-Allow-Origin": "https://www.raniadev-blog.tk"
+                //"Access-Control-Allow-Origin": url,
+                'Access-Control-Allow-Credentials': true
             },
             credentials: "include"
         }) 
@@ -92,14 +93,20 @@ export const login = ({email,password}) => async dispatch => {
 //         dispatch({type: LOGIN_FAIL})
 //     })
 // };
-export const activateAccount = (activeToken)=> dispatch=> {
-    axios.get(`${url}/users/activateAccount/${activeToken}`).then(res=> dispatch({
-        type: ACTIVATE_ACCOUNT,
-        payload: res.data
-    })).catch(err=> {
-        dispatch(returnErrors(err.response.data.message, err.response.data.status));
+export const activateAccount = (activeToken)=> async dispatch=> {
+    try {
+        const res = await fetch(`${url}/users/activateAccount/${activeToken}`, {
+            method: 'GET',
+        })
+        const data = await res.json()
+        dispatch({
+            type: ACTIVATE_ACCOUNT,
+            payload: data
+        })
+    }catch(err){
+        dispatch(returnErrors(err.message, err.status));
         dispatch({type: ACTIVATE_FAIL})
-    })
+    }
 };
 
 export const addProfile = (data) => async dispatch=>{
@@ -109,8 +116,8 @@ export const addProfile = (data) => async dispatch=>{
             method: 'PATCH',
             body: data,
             headers:{
-                'Content-Type': 'application/json',
-                "Access-Control-Allow-Origin": "https://www.raniadev-blog.tk"
+                //"Access-Control-Allow-Origin": url,
+                'Access-Control-Allow-Credentials': true
             },
             credentials: "include"
         })
@@ -120,60 +127,79 @@ export const addProfile = (data) => async dispatch=>{
         }
         dispatch({type: ADD_PROFILE,payload: profData});
     }catch(err){
-        console.log(err)
         dispatch(returnErrors(err.message, err.status));
     }
 };
 
 export const resendEmail = (email) => async dispatch => {
-    const config = {
-        headers: {
-          'Content-Type': 'application/json'
+    try{
+        const res = await fetch(`${url}/users/resendEmailToken`, {
+            method: 'POST',
+            body: JSON.stringify(email),
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+        const data = await res.json()
+        if(!res.ok){
+            console.log(data)
+            throw data
         }
-    };
-    await axios.post(`${url}/users/resendEmailToken`,JSON.stringify(email),config).then(res=> {
-        dispatch({type: RESEND_ACTIVATE,payload: res.data});
+        dispatch({type: RESEND_ACTIVATE,payload: data});
+
+    }catch(err){
+        dispatch(returnErrors(err.message,err.status));
     }
-    ).catch(err=> {
-        dispatch(returnErrors(err.response.data.message, err.response.data.status));
-    })
 };
 
 export const forgetPassword = (email) => async dispatch => {
-    const config = {
-        headers: {
-          'Content-Type': 'application/json'
+    try{
+        const res = await fetch(`${url}/users/forgetPassword`, {
+            method: 'POST',
+            body: JSON.stringify(email),
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+        const data = await res.json()
+        if(!res.ok){
+            throw data
         }
-    };
-    await axios.post(`${url}/users/forgetPassword`,JSON.stringify(email),config).then(res=> {
-        dispatch({type: FORGET_PASS,payload: res.data});
+        dispatch({type: FORGET_PASS,payload: data});
+    }catch(err){
+        dispatch(returnErrors(err.message,err.status));
     }
-    ).catch(err=> {
-        dispatch(returnErrors(err.response.data.message, err.response.data.status));
-    })
 };
 
 export const ressetPasswordGet = (token) => async dispatch => {
-    await axios.get(`${url}/users/ressetPassword/${token}`).then(res=> {
-        dispatch({type: RESET_PASSGET,payload: res.data});
+    try{
+        const res = await fetch(`${url}/users/ressetPassword/${token}`, {
+            method: 'GET'
+        })
+        const data = await res.json()
+        dispatch({type: RESET_PASSGET,payload: data});
+    }catch(err){
+        dispatch(returnErrors(err.message, err.status, 'GET_RESSET'));
     }
-    ).catch(err=> {
-        dispatch(returnErrors(err.response.data.message, err.response.data.status, 'GET_RESSET'));
-    })
 };
 
 export const ressetPassword = (token,{password, passwordConfirm}) => async dispatch => {
-    const config = {
-        headers: {
-          'Content-Type': 'application/json'
+    try{
+        const res = await fetch(`${url}/users/ressetPassword/${token}`, {
+            method: 'PATCH',
+            body: JSON.stringify({password, passwordConfirm}),
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+        const data = await res.json()
+        if(!res.ok){
+            throw data
         }
-    };
-    await axios.patch(`${url}/users/ressetPassword/${token}`,JSON.stringify({password, passwordConfirm}),config).then(res=> {
-        dispatch({type: RESET_PASS,payload: res.data});
+        dispatch({type: RESET_PASS,payload: data});
+    }catch(err){
+        dispatch(returnErrors(err.message,err.status));
     }
-    ).catch(err=> {
-        dispatch(returnErrors(err.response.data.message, err.response.data.status));
-    })
 };
 
 export const updatePassword = ({currentPass, password, passwordConfirm}) => async dispatch => {
@@ -183,7 +209,8 @@ export const updatePassword = ({currentPass, password, passwordConfirm}) => asyn
             body: JSON.stringify({currentPass, password, passwordConfirm}),
             headers:{
                 'Content-Type': 'application/json',
-                "Access-Control-Allow-Origin": "https://www.raniadev-blog.tk"
+                'Access-Control-Allow-Credentials': true
+                //"Access-Control-Allow-Origin": url
             },
             credentials: "include"
         })
@@ -204,7 +231,7 @@ export const updateEmail = ({newEmail, password}) => async dispatch => {
             body: JSON.stringify({newEmail, password}),
             headers:{
                 'Content-Type': 'application/json',
-                "Access-Control-Allow-Origin": "https://www.raniadev-blog.tk"
+                'Access-Control-Allow-Credentials': true
             },
             credentials: "include"
         })
@@ -225,7 +252,8 @@ export const updateMe = ({firstName, lastName}) => async dispatch => {
             body: JSON.stringify({firstName, lastName}),
             headers:{
                 'Content-Type': 'application/json',
-                "Access-Control-Allow-Origin": "https://www.raniadev-blog.tk"
+                'Access-Control-Allow-Credentials': true
+                //"Access-Control-Allow-Origin": url
             },
             credentials: "include"
         })
@@ -239,13 +267,25 @@ export const updateMe = ({firstName, lastName}) => async dispatch => {
     }
 };
 
-export const confirmNewEmail = (token)=> dispatch=> {
-    axios.patch(`${url}/users/confirmNewEmail/${token}`).then(res=> dispatch({
-        type: CONFIRM_NEWEMAIL,
-        payload: res.data
-    })).catch(err=> {
-        dispatch(returnErrors(err.response.data.message, err.response.data.status));
-    })
+export const confirmNewEmail = (token)=> async dispatch=> {
+    try{
+        const res = await fetch(`${url}/users/confirmNewEmail/${token}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+        const data = await res.json()
+        if(!res.ok){
+            throw data
+        }
+        dispatch({
+            type: CONFIRM_NEWEMAIL,
+            payload: data
+        })    
+    }catch(err){
+        dispatch(returnErrors(err.message,err.status));
+    }
 };
 
 export const logout = () => async dispatch => {

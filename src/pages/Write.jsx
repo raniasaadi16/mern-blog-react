@@ -76,7 +76,7 @@ export default function Write({post, pageTitle}) {
             formData.append('content',data.content);
             formData.append('category',data.category);
             formData.append('picture',data.picture);
-            console.log(formData)
+            //console.log(formData)
             dispatch(createPost(formData));
         }
 

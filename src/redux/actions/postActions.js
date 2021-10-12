@@ -1,39 +1,55 @@
 import { IS_LOADED, GET_ALLPOSTS, GET_POST, CREATE_POST, UPDATE_POST, DELETE_POST, LIKE_POST, CLEAR_MSG, GET_SLIDEPOSTS } from "./types";
-import axios from 'axios';
 import { returnErrors } from "./errorsAction";
 
 const url = 'https://nextjs-mern-blog.herokuapp.com/api'
 //const url = 'http://loaclhost:5000/api'
 
 export const getAllPosts = (search) => async dispatch => {
-    await axios.get(`${url}/posts/${search}`).then(res=> dispatch({
-        type: GET_ALLPOSTS,
-        payload: res.data
-    })).catch(err=>{
-        dispatch(returnErrors(err.response.data.message,err.response.data.status));
-    });
+    try{
+        const res = await fetch(`${url}/posts/${search}`,{
+            method: 'GET'
+        })
+        const data = await res.json()
+        dispatch({
+            type: GET_ALLPOSTS,
+            payload: data
+        })
+    }catch(err){
+        dispatch(returnErrors(err.message,err.status));
+    }
     dispatch({type: IS_LOADED});
 };
 
 export const getSlidPosts = () => async dispatch => {
-    await axios.get(`${url}/posts/?sort=likeCount&limit=10`).then(res=> dispatch({
-        type: GET_SLIDEPOSTS,
-        payload: res.data
-    })).catch(err=>{
-        dispatch(returnErrors(err.response.data.message,err.response.data.status));
-    });
+    try{
+        const res = await fetch(`${url}/posts/?sort=likeCount&limit=10` ,{
+            method: 'GET'
+        })
+        const data = await res.json()
+        dispatch({
+            type: GET_SLIDEPOSTS,
+            payload: data
+        })
+    }catch(err){
+        dispatch(returnErrors(err.message,err.status));
+    }
     dispatch({type: IS_LOADED});
 };
 
 
 export const getPost = (id) => async dispatch => {
-    //dispatch({type: IS_LOADED});
-    await axios.get(`${url}/posts/${id}`).then(res=> dispatch({
-        type: GET_POST,
-        payload: res.data
-    })).catch(err=>{
-        dispatch(returnErrors(err.response.data.message,err.response.data.status));
-    });
+    try{
+        const res = await fetch(`${url}/posts/${id}` ,{
+            method: 'GET'
+        })
+        const data = await res.json()
+        dispatch({
+            type: GET_POST,
+            payload: data
+        })
+    }catch(err){
+        dispatch(returnErrors(err.message,err.status));
+    }
     dispatch({type: IS_LOADED});
 };
 
@@ -44,17 +60,17 @@ export const createPost = (data) => async dispatch => {
             body: data,
             credentials:'include',
             headers: {
-                'Content-Type': 'application/json',
+                //'Content-Type': 'application/json',
                 'Access-Control-Allow-Credentials': true
             }
         })
-        const data = await res.json()
+        const post = await res.json()
         if(!res.ok){
-            throw data
+            throw post
         }
         dispatch({
             type: CREATE_POST,
-            payload: data
+            payload: post
         })
     }catch(err){
         dispatch(returnErrors(err.message,err.status));
@@ -69,7 +85,7 @@ export const updatePost = (id, data) => async dispatch => {
             body: data,
             credentials:'include',
             headers: {
-                'Content-Type': 'application/json',
+                //'Content-Type': 'application/json',
                 'Access-Control-Allow-Credentials': true
             }
         })
