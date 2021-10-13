@@ -39,7 +39,7 @@ export default function Profile() {
                     <div className="row">
                         {/* check if the user is loaded */}
                         {posts.length && posts.map(post => (
-                            <div className="col-4" key={post._id}>
+                            <div className="col-lg-4 col-md-6 col-sm-12" key={post._id}>
                                 <PostCard2 post={post} enableDelUpda={checkUser(post.user)}/>
                             </div>
                         ))}

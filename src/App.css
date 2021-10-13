@@ -328,3 +328,11 @@ input{
         display: none;
     }
 }
+@media screen and (max-width: 480px) {
+    .settings-responsive{
+        margin: 0 !important;
+    }
+    .settings-responsive h4{
+        font-size: 20px;
+    }
+}
