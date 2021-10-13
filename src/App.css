@@ -327,6 +327,9 @@ input{
     .login .img-box{
         display: none;
     }
+    .popup .w-25,.popup .w-50,.w-50{
+        width: 90% !important;
+    }
 }
 @media screen and (max-width: 480px) {
     .settings-responsive{
