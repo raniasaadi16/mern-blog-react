@@ -1,7 +1,7 @@
 import { GET_ALLUSERS, GET_USER, DELETE_USER, CLEAR_MSG } from "./types";
 import { returnErrors } from "./errorsAction";
 
-const url = 'https://nextjs-mern-blog.herokuapp.com/api'
+const url = 'https://blog-api.raniadev.tech/api'
 //const url = 'http://loaclhost:5000/api'
 
 export const getAllUsers = () => async dispatch => {
