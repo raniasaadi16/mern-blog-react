@@ -1,7 +1,7 @@
 import { IS_LOADED, GET_COMMENTS, CREATE_COMMENT, UPDATE_COMMENT, DELETE_COMMENT, CLEAR_MSG } from "./types";
 import { returnErrors } from "./errorsAction";
 
-const url = 'https://nextjs-mern-blog.herokuapp.com/api'
+const url = 'https://blog-api.raniadev.tech/api'
 //const url = 'http://loaclhost:5000/api'
 
 export const getAllComments = (id) => async dispatch => {
