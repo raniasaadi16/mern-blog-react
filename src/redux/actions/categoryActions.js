@@ -1,7 +1,7 @@
 import { GET_CATEGORIES, UPDATE_CATEGORY, ADD_CATEGORY, DELETE_CATEGORY } from "../actions/types";
 import { returnErrors } from "./errorsAction";
 
-const url = 'https://nextjs-mern-blog.herokuapp.com/api'
+const url = 'https://blog-api.raniadev.tech/api'
 //const url = 'http://loaclhost:5000/api'
 
 export const getCategories = () => async dispatch => {
