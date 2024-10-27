@@ -1,7 +1,7 @@
 import { IS_LOADED, USER_LOADED, LOGIN_SUCCESS, LOGIN_FAIL, AUTH_ERROR, LOGOUT_SUCCESS, REGISTER_SUCCESS, REGISTER_FAIL, ACTIVATE_ACCOUNT, ACTIVATE_FAIL, RESEND_ACTIVATE, CLEAR_MSG, ADD_PROFILE, FORGET_PASS, RESET_PASS, RESET_PASSGET, UPDATE_PASS, UPDATE_EMAIL, UPDATE_ME, CONFIRM_NEWEMAIL, DELETE_ME } from "./types";
 import { returnErrors } from "./errorsAction";
 
-const url = 'https://nextjs-mern-blog.herokuapp.com/api'
+const url = 'https://blog-api.raniadev.tech/api'
 //const url = 'http://loaclhost:5000/api'
 
 export const loadUser = () => async dispatch => {
