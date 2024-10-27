@@ -1,7 +1,7 @@
 import { IS_LOADED, GET_ALLPOSTS, GET_POST, CREATE_POST, UPDATE_POST, DELETE_POST, LIKE_POST, CLEAR_MSG, GET_SLIDEPOSTS } from "./types";
 import { returnErrors } from "./errorsAction";
 
-const url = 'https://nextjs-mern-blog.herokuapp.com/api'
+const url = 'https://blog-api.raniadev.tech/api'
 //const url = 'http://loaclhost:5000/api'
 
 export const getAllPosts = (search) => async dispatch => {
